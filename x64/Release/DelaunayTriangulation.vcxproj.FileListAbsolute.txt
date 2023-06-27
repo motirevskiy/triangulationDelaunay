@@ -1,1 +1,2 @@
 \\Mac\Home\Desktop\viaVisual\x64\Release\DelaunayTriangulation.exe
+\\Mac\Home\Desktop\triangulationDelaunay\x64\Release\DelaunayTriangulation.exe

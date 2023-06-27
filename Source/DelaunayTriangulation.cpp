@@ -15,7 +15,7 @@ DelaunayTriangulation::DelaunayTriangulation()
             (i % 2 == 0 ? 1 : -1) * (i / 2 == 0 ? VECTOR_LENGTH : 0),
             (i % 2 == 0 ? 1 : -1) * (i / 2 == 1 ? VECTOR_LENGTH : 0),
             (i % 2 == 0 ? 1 : -1) * (i / 2 == 2 ? VECTOR_LENGTH : 0),
-            true, 0, 0, 0
+            true
         );
     }
 

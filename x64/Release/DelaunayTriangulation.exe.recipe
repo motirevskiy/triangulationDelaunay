@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>\\Mac\Home\Desktop\viaVisual\x64\Release\DelaunayTriangulation.exe</FullPath>
+      <FullPath>\\Mac\Home\Desktop\triangulationDelaunay\x64\Release\DelaunayTriangulation.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

@@ -16,7 +16,6 @@ vector<Vector3D*> DotCloudGenerator::GetSphericalDots()
     cout << "Dot Count: ";
     cin >> dotCount;
 
-    ofstream file("Resource\\random_out.txt");
     vector<Vector3D*> dots = vector<Vector3D*>();
     dots.reserve(dotCount);
 
@@ -24,12 +23,9 @@ vector<Vector3D*> DotCloudGenerator::GetSphericalDots()
     for (int i = 0; i < dotCount; i++)
     {
         Vector3D* dot = GetRandomDotEvenlyDistributed();
-        file << "# " << dot->X << " " << dot->Y << " " << dot->Z << " "
-            << dot->R << " " << dot->G << " " << dot->B << " " << endl;
         dots.push_back(dot);
     }
 
-    file.close();
 
     return dots;
 }

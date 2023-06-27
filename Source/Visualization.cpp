@@ -43,7 +43,7 @@ void Visualization::ReconstructIn3D(vector<Vector3D*>& dots, vector<tuple<int, i
     {
         Vector3D* dot = *itDots;
         points->InsertNextPoint(dot->X, dot->Y, dot->Z);
-        colors->InsertNextTuple3(dot->R, dot->G, dot->B);
+        colors->InsertNextTuple3(255, 248, 220);
     }
 
     vtkTriangle* vtkTriangle;

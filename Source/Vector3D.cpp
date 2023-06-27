@@ -5,20 +5,16 @@
 using namespace std;
 using namespace dt;
 
-Vector3D::Vector3D(double x, double y, double z, uint8_t r, uint8_t g, uint8_t b)
+Vector3D::Vector3D(double x, double y, double z)
 {
     Id = GenerateRunningId();
 
     X = x;
     Y = y;
     Z = z;
-
-    R = r;
-    G = g;
-    B = b;
 }
 
-Vector3D::Vector3D(double x, double y, double z, bool isAuxiliaryDot, uint8_t r, uint8_t g, uint8_t b)
+Vector3D::Vector3D(double x, double y, double z, bool isAuxiliaryDot)
 {
     Id = GenerateRunningId();
 
@@ -27,10 +23,6 @@ Vector3D::Vector3D(double x, double y, double z, bool isAuxiliaryDot, uint8_t r,
     X = x;
     Y = y;
     Z = z;
-
-    R = r;
-    G = g;
-    B = b;
 }
 
 Vector3D::Vector3D(Vector3D* dot, double lengthAfterProjection)
@@ -45,10 +37,6 @@ Vector3D::Vector3D(Vector3D* dot, double lengthAfterProjection)
     X = scaleFactor * dot->X;
     Y = scaleFactor * dot->Y;
     Z = scaleFactor * dot->Z;
-
-    R = dot->R;
-    G = dot->G;
-    B = dot->B;
 }
 
 Vector3D::~Vector3D()
@@ -70,7 +58,6 @@ string Vector3D::ToString()
 {
     return "Dot ID: " + to_string(Id) + "; "
         + to_string(X) + ", " + to_string(Y) + ", " + to_string(Z) + "; "
-        + to_string(R) + ", " + to_string(G) + ", " + to_string(B) + "; "
         + "IsVisited: " + (IsVisited ? "true" : "false") + "; "
         + "IsAuxiliaryDot: " + (IsAuxiliaryDot ? "true" : "false") + ";\n";
 }

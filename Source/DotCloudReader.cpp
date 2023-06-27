@@ -16,7 +16,6 @@ vector<Vector3D*> DotCloudReader::GetDotCloud(std::string filename)
     ifstream file(filename);
 
     double x = 0, y = 0, z = 0;
-    int red = 0, green = 0, blue = 0;
 
     string line;
     string s;
@@ -46,7 +45,7 @@ vector<Vector3D*> DotCloudReader::GetDotCloud(std::string filename)
         }
         z = stod(line.substr(pos + 1));
 
-        Vector3D* dot = new Vector3D(x, y, z, (uint8_t)red, (uint8_t)green, (uint8_t)blue);
+        Vector3D* dot = new Vector3D(x, y, z);
         dots.push_back(dot);
     }
 

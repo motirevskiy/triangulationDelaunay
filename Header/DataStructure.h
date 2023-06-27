@@ -19,8 +19,8 @@ namespace dt
         bool IsVisited = false;
         bool IsAuxiliaryDot = false;
 
-        Vector3D(double x, double y, double z, uint8_t r = 255, uint8_t g = 248, uint8_t b = 220);
-        Vector3D(double x, double y, double z, bool isAuxiliaryDot, uint8_t r = 255, uint8_t g = 248, uint8_t b = 220);
+        Vector3D(double x, double y, double z);
+        Vector3D(double x, double y, double z, bool isAuxiliaryDot);
         Vector3D(Vector3D* dot, double lengthAfterProjection);
         ~Vector3D();
 
