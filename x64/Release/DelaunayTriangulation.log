@@ -1,0 +1,13 @@
+﻿  Main.cpp
+  DelaunayTriangulation.cpp
+  DotCloudGenerator.cpp
+  DotCloudReader.cpp
+  Triangle.cpp
+  Vector3D.cpp
+  Visualization.cpp
+\\Mac\Home\Desktop\viaVisual\Source\Visualization.cpp(191,15): error C2027: use of undefined type 'vtkCamera'
+\\Mac\Home\Desktop\viaVisual\packages\vtk_static_vc141-x64-release.8.0.1\build\native\include\vtk-8.0\vtkRenderer.h(47,7): message : see declaration of 'vtkCamera'
+\\Mac\Home\Desktop\viaVisual\Source\Visualization.cpp(192,15): error C2027: use of undefined type 'vtkCamera'
+\\Mac\Home\Desktop\viaVisual\packages\vtk_static_vc141-x64-release.8.0.1\build\native\include\vtk-8.0\vtkRenderer.h(47,7): message : see declaration of 'vtkCamera'
+\\Mac\Home\Desktop\viaVisual\Source\Visualization.cpp(193,15): error C2027: use of undefined type 'vtkCamera'
+\\Mac\Home\Desktop\viaVisual\packages\vtk_static_vc141-x64-release.8.0.1\build\native\include\vtk-8.0\vtkRenderer.h(47,7): message : see declaration of 'vtkCamera'
