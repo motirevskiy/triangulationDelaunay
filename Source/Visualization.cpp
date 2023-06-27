@@ -81,10 +81,6 @@ void Visualization::ReconstructIn3D(vector<Vector3D*>& dots, vector<tuple<int, i
 
     vtkActor* actor = vtkActor::New();
     actor->SetMapper(mapper);
-    if (IsShowWireframe)
-    {
-        actor->GetProperty()->SetRepresentationToWireframe();
-    }
 
     renderer->AddActor(actor);
 
@@ -93,11 +89,9 @@ void Visualization::ReconstructIn3D(vector<Vector3D*>& dots, vector<tuple<int, i
 
     renderWindow->Render();
 
-    // Создаем объект vtkWindowToImageFilter и устанавливаем исходное окно для сохранения
     vtkWindowToImageFilter* windowToImageFilter = vtkWindowToImageFilter::New();
     windowToImageFilter->SetInput(renderWindow);
 
-    // Рендерим и сохраняем изображение
     windowToImageFilter->Update();
     vtkImageData* imageData = windowToImageFilter->GetOutput();
 

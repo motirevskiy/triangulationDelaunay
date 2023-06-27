@@ -21,7 +21,7 @@ namespace dt
         // 0: triangle search operations
         // 1: local optimizations
         // 2: start time; 3: end time;
-        long _Statistics[4];
+        // long _Statistics[4];
 
         void BuildInitialHull(std::vector<Vector3D*>* dots);
         void InsertDot(Vector3D* dot);
@@ -40,7 +40,7 @@ namespace dt
         ~DelaunayTriangulation();
 
         std::vector<std::tuple<int, int, int>*> GetTriangulationResult(std::vector<Vector3D*> &dots);
-        std::string GetStatistics();
+        // std::string GetStatistics();
     };
 }
 

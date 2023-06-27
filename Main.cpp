@@ -29,7 +29,6 @@ int main(int argc, char **argv)
 
         DelaunayTriangulation triangulation = DelaunayTriangulation();
         vector<tuple<int, int, int>*> mesh = triangulation.GetTriangulationResult(dots);
-        cout << triangulation.GetStatistics() << endl;
 #ifdef VISUAL
         Visualization visualization = Visualization(false);
         visualization.ReconstructIn3D(dots, mesh);

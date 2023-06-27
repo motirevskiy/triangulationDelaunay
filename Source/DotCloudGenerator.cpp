@@ -32,7 +32,6 @@ vector<Vector3D*> DotCloudGenerator::GetSphericalDots()
 
 Vector3D* DotCloudGenerator::GetRandomDot()
 {
-    // use spherical coordinate
     double phi = (rand() % 360) * PI / 180;
     double theta = (rand() % 360) * PI / 180;
 
@@ -45,7 +44,6 @@ Vector3D* DotCloudGenerator::GetRandomDot()
 
 Vector3D* DotCloudGenerator::GetRandomDotEvenlyDistributed()
 {
-    // project random dot in cartesian coordinate to unit sphere
     double x = rand() % 2000 - 1000;
     double y = rand() % 2000 - 1000;
     double z = rand() % 2000 - 1000;

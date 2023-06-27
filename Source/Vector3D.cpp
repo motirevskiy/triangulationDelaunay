@@ -53,11 +53,3 @@ bool Vector3D::IsCoincidentWith(Vector3D* dot)
 {
     return (X == dot->X && Y == dot->Y && Z == dot->Z);
 }
-
-string Vector3D::ToString()
-{
-    return "Dot ID: " + to_string(Id) + "; "
-        + to_string(X) + ", " + to_string(Y) + ", " + to_string(Z) + "; "
-        + "IsVisited: " + (IsVisited ? "true" : "false") + "; "
-        + "IsAuxiliaryDot: " + (IsAuxiliaryDot ? "true" : "false") + ";\n";
-}

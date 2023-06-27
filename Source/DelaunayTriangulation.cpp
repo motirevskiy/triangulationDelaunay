@@ -22,10 +22,6 @@ DelaunayTriangulation::DelaunayTriangulation()
     _ProjectedDots = new vector<Vector3D*>();
     _Mesh = new vector<Triangle*>();
 
-    for (unsigned long i = 0; i < sizeof(_Statistics) / sizeof(long); i++)
-    {
-        _Statistics[i] = 0;
-    }
 }
 
 DelaunayTriangulation::~DelaunayTriangulation()
@@ -53,14 +49,11 @@ DelaunayTriangulation::~DelaunayTriangulation()
 
 vector<tuple<int, int, int>*> DelaunayTriangulation::GetTriangulationResult(vector<Vector3D*> &dots)
 {
-    _Statistics[2] = clock();
 
     _ProjectedDots->reserve(dots.size());
 
-    // N random dots can form 8+(N-6)*2 triangles based on the algorithm
     _Mesh->reserve(8 + (dots.size() - 6) * 2);
 
-    // project dots to an unit shpere for triangulation
     vector<Vector3D*>::iterator itDots;
     for (itDots = dots.begin(); itDots != dots.end(); itDots++)
     {
@@ -68,7 +61,6 @@ vector<tuple<int, int, int>*> DelaunayTriangulation::GetTriangulationResult(vect
         _ProjectedDots->push_back(projectedDot);
     }
 
-    // prepare initial convex hull with 6 vertices and 8 triangle faces
     BuildInitialHull(_ProjectedDots);
 
     for (itDots = _ProjectedDots->begin(); itDots != _ProjectedDots->end(); itDots++)
@@ -80,7 +72,6 @@ vector<tuple<int, int, int>*> DelaunayTriangulation::GetTriangulationResult(vect
         }
     }
 
-    // remove trianges connected with auxiliary dots
     RemoveExtraTriangles();
 
     // generate output
@@ -95,7 +86,6 @@ vector<tuple<int, int, int>*> DelaunayTriangulation::GetTriangulationResult(vect
             ));
     }
 
-    _Statistics[3] = clock();
 
     return mesh;
 }
@@ -110,7 +100,6 @@ void DelaunayTriangulation::BuildInitialHull(vector<Vector3D*>* dots)
         initialVertices[i] = _AuxiliaryDots[i];
     }
 
-    // if close enough, use input dots to replace auxiliary dots so won't be removed in the end
     double minDistance[INIT_VERTICES_COUNT] = { 0, 0, 0, 0, 0, 0 };
     vector<Vector3D*>::iterator it;
     for (it = dots->begin(); it != dots->end(); it++)
@@ -162,7 +151,6 @@ void DelaunayTriangulation::BuildInitialHull(vector<Vector3D*>* dots)
         initialHullFaces[i]->AssignNeighbors(n0, n1, n2);
     }
 
-    // dot already in the mesh, avoid being visited by InsertDot() again
     for (int i = 0; i < INIT_VERTICES_COUNT; i++)
     {
         initialVertices[i]->IsVisited = true;
@@ -179,13 +167,11 @@ void DelaunayTriangulation::InsertDot(Vector3D* dot)
 
     while (it != _Mesh->end())
     {
-        _Statistics[0]++;
 
         det[0] = GetDeterminant(triangle->Vertex[0], triangle->Vertex[1], dot);
         det[1] = GetDeterminant(triangle->Vertex[1], triangle->Vertex[2], dot);
         det[2] = GetDeterminant(triangle->Vertex[2], triangle->Vertex[0], dot);
 
-        // if this dot projected into an existing triangle, split the existing triangle to 3 new ones
         if (det[0] >= 0 && det[1] >= 0 && det[2] >= 0)
         {
             if (!triangle->HasVertexCoincidentWith(dot))
@@ -196,7 +182,6 @@ void DelaunayTriangulation::InsertDot(Vector3D* dot)
             return;
         }
 
-        // on one side, search neighbors
         else if (det[1] >= 0 && det[2] >= 0)
             triangle = triangle->Neighbor[0];
         else if (det[0] >= 0 && det[2] >= 0)
@@ -204,7 +189,6 @@ void DelaunayTriangulation::InsertDot(Vector3D* dot)
         else if (det[0] >= 0 && det[1] >= 0)
             triangle = triangle->Neighbor[2];
 
-        // cannot determine effectively 
         else if (det[0] >= 0)
             triangle = triangle->Neighbor[1];
         else if (det[1] >= 0)
@@ -263,7 +247,6 @@ void DelaunayTriangulation::SplitTriangle(Triangle* triangle, Vector3D* dot)
     _Mesh->push_back(newTriangle1);
     _Mesh->push_back(newTriangle2);
 
-    // optimize triangles according to delaunay triangulation definition
     DoLocalOptimization(triangle, triangle->Neighbor[1]);
     DoLocalOptimization(newTriangle1, newTriangle1->Neighbor[1]);
     DoLocalOptimization(newTriangle2, newTriangle2->Neighbor[1]);
@@ -283,8 +266,6 @@ void DelaunayTriangulation::FixNeighborhood(Triangle* target, Triangle* oldNeigh
 
 void DelaunayTriangulation::DoLocalOptimization(Triangle* t0, Triangle* t1)
 {
-    // return;
-    _Statistics[1]++;
 
     for (int i = 0; i < 3; i++)
     {
@@ -311,7 +292,6 @@ void DelaunayTriangulation::DoLocalOptimization(Triangle* t0, Triangle* t1)
 
         if (GetDeterminant(matrix) <= 0)
         {
-            // terminate after optimized
             break;
         }
 
@@ -392,7 +372,6 @@ double DelaunayTriangulation::GetDeterminant(Vector3D* v0, Vector3D* v1, Vector3
 
 double DelaunayTriangulation::GetDeterminant(double matrix[])
 {
-    // inversed for left handed coordinate system
     double determinant = matrix[2] * matrix[4] * matrix[6]
         + matrix[0] * matrix[5] * matrix[7]
         + matrix[1] * matrix[3] * matrix[8]
@@ -400,22 +379,5 @@ double DelaunayTriangulation::GetDeterminant(double matrix[])
         - matrix[1] * matrix[5] * matrix[6]
         - matrix[2] * matrix[3] * matrix[7];
 
-    // adjust result based on float number accuracy, otherwise causing deadloop
     return abs(determinant) <= std::numeric_limits<double>::epsilon() ? 0 : determinant;
-}
-
-string DelaunayTriangulation::GetStatistics()
-{
-    // display thousands separator
-    regex regex("\\d{1,3}(?=(\\d{3})+$)");
-
-    return "\nTriangle count: "
-        + regex_replace(to_string(_Mesh->size()), regex, "$&,")
-        + "\nTriangle search operations: "
-        + regex_replace(to_string(_Statistics[0]), regex, "$&,")
-        + "\nLocal optimizations: "
-        + regex_replace(to_string(_Statistics[1]), regex, "$&,")
-        + "\nTriangulation cost: "
-        + to_string(_Statistics[3] - _Statistics[2])
-        + "ms\n";
 }

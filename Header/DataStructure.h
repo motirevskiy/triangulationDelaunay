@@ -14,7 +14,7 @@ namespace dt
         double X, Y, Z;
 
         // color
-        uint8_t R, G, B;
+        // uint8_t R, G, B;
 
         bool IsVisited = false;
         bool IsAuxiliaryDot = false;
@@ -25,7 +25,7 @@ namespace dt
         ~Vector3D();
 
         bool IsCoincidentWith(Vector3D* dot);
-        std::string ToString();
+        // std::string ToString();
     };
 
     class Triangle
@@ -46,7 +46,7 @@ namespace dt
 
         bool HasVertexCoincidentWith(Vector3D* dot);
         void AssignNeighbors(Triangle* n0, Triangle* n1, Triangle* n2);
-        std::string ToString();
+        // std::string ToString();
     };
 }
 
