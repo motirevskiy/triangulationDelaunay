@@ -120,7 +120,6 @@
     <ClCompile Include="Source\DotCloudReader.cpp" />
     <ClCompile Include="Source\Triangle.cpp" />
     <ClCompile Include="Source\DelaunayTriangulation.cpp" />
-    <ClCompile Include="Source\DotCloudGenerator.cpp" />
     <ClCompile Include="Source\Vector3D.cpp" />
     <ClCompile Include="Source\Visualization.cpp" />
   </ItemGroup>

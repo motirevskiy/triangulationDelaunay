@@ -11,7 +11,7 @@
 using namespace std;
 using namespace dt;
 
-void ClearMemory(vector<Vector3D*>&, vector<tuple<int, int, int>*>&);
+void freeMem(vector<Vector3D*>&, vector<tuple<int, int, int>*>&);
 vector<string> parseArgs(int argc, char **argv);
 
 int main(int argc, char **argv)
@@ -20,23 +20,19 @@ int main(int argc, char **argv)
     if (files.empty()) return 1;
     try
     {
-        int cmd = 2;
 
-        vector<Vector3D*> dots
-            = cmd == 1
-            ? DotCloudGenerator().GetSphericalDots()
-            : DotCloudReader().GetDotCloud(files[1]);
+        vector<Vector3D*> dots = DotCloudReader().GetDotCloud(files[1]);
 
         DelaunayTriangulation triangulation = DelaunayTriangulation();
-        vector<tuple<int, int, int>*> mesh = triangulation.GetTriangulationResult(dots);
+        vector<tuple<int, int, int>*> mesh = triangulation.getResult(dots);
 #ifdef VISUAL
-        Visualization visualization = Visualization(false);
-        visualization.ReconstructIn3D(dots, mesh);
+        Visualization visualization = Visualization();
+        visualization.visualize(dots, mesh);
 #endif
 
         DotCloudReader().writeToFile(mesh, dots, files[0]);
 
-        ClearMemory(dots, mesh);
+        freeMem(dots, mesh);
     }
     catch (exception e)
     {
@@ -47,7 +43,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void ClearMemory(vector<Vector3D*> &dots, vector<tuple<int, int, int>*> &mesh)
+void freeMem(vector<Vector3D*> &dots, vector<tuple<int, int, int>*> &mesh)
 {
     vector<Vector3D*>::iterator itDots;
     for (itDots = dots.begin(); itDots != dots.end(); itDots++)

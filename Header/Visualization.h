@@ -8,12 +8,11 @@ namespace dt
     class Visualization
     {
     public:
-        bool IsShowWireframe;
 
-        Visualization(bool isShowWireframe = false);
+        Visualization();
         ~Visualization();
 
-        void ReconstructIn3D(std::vector<Vector3D*> &dots, std::vector<std::tuple<int, int, int>*> &mesh);
+        void visualize(std::vector<Vector3D*> &dots, std::vector<std::tuple<int, int, int>*> &mesh);
 
     };
 }

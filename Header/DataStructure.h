@@ -10,22 +10,18 @@ namespace dt
     public:
         int Id = 0;
 
-        // coordinate
         double X, Y, Z;
 
-        // color
-        // uint8_t R, G, B;
 
-        bool IsVisited = false;
-        bool IsAuxiliaryDot = false;
+        bool wasLooked = false;
+        bool isInitDot = false;
 
         Vector3D(double x, double y, double z);
-        Vector3D(double x, double y, double z, bool isAuxiliaryDot);
+        Vector3D(double x, double y, double z, bool isInitDot);
         Vector3D(Vector3D* dot, double lengthAfterProjection);
         ~Vector3D();
 
         bool IsCoincidentWith(Vector3D* dot);
-        // std::string ToString();
     };
 
     class Triangle
@@ -35,10 +31,8 @@ namespace dt
     public:
         int Id = 0;
 
-        // pointers pointing to 3 vertices
         Vector3D* Vertex[3];
 
-        // pointers pointing to 3 neighbors
         Triangle* Neighbor[3];
 
         Triangle(Vector3D* v0, Vector3D* v1, Vector3D* v2);
@@ -46,7 +40,6 @@ namespace dt
 
         bool HasVertexCoincidentWith(Vector3D* dot);
         void AssignNeighbors(Triangle* n0, Triangle* n1, Triangle* n2);
-        // std::string ToString();
     };
 }
 

@@ -14,11 +14,11 @@ Vector3D::Vector3D(double x, double y, double z)
     Z = z;
 }
 
-Vector3D::Vector3D(double x, double y, double z, bool isAuxiliaryDot)
+Vector3D::Vector3D(double x, double y, double z, bool isInitDot)
 {
     Id = GenerateRunningId();
 
-    IsAuxiliaryDot = isAuxiliaryDot;
+    this->isInitDot = isInitDot;
 
     X = x;
     Y = y;
@@ -28,8 +28,8 @@ Vector3D::Vector3D(double x, double y, double z, bool isAuxiliaryDot)
 Vector3D::Vector3D(Vector3D* dot, double lengthAfterProjection)
 {
     Id = dot->Id;
-    IsVisited = dot->IsVisited;
-    IsAuxiliaryDot = dot->IsAuxiliaryDot;
+    wasLooked = dot->wasLooked;
+    isInitDot = dot->isInitDot;
 
     double length = sqrt(pow(dot->X, 2) + pow(dot->Y, 2) + pow(dot->Z, 2));
     double scaleFactor = lengthAfterProjection / length;

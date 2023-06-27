@@ -20,104 +20,100 @@
 using namespace std;
 using namespace dt;
 
-Visualization::Visualization(bool isShowWireframe)
+Visualization::Visualization()
 {
-    IsShowWireframe = isShowWireframe;
 }
 
 Visualization::~Visualization()
 {
 }
 
-void Visualization::ReconstructIn3D(vector<Vector3D*>& dots, vector<tuple<int, int, int>*>& mesh)
+void Visualization::visualize(vector<Vector3D*>& dots, vector<tuple<int, int, int>*>& mesh)
 {
-    vtkPoints* points = vtkPoints::New();
-    vtkUnsignedCharArray* colors = vtkUnsignedCharArray::New();
-    vtkCellArray* cells = vtkCellArray::New();
+    vtkUnsignedCharArray* clr = vtkUnsignedCharArray::New();
+    vtkPoints* pts = vtkPoints::New();
+    vtkCellArray* clArr = vtkCellArray::New();
 
-    colors->SetNumberOfComponents(3);
-    colors->SetName("Colors");
+    clr->SetName("Colors");
+    clr->SetNumberOfComponents(3);
 
-    vector<Vector3D*>::iterator itDots;
-    for (itDots = dots.begin(); itDots != dots.end(); itDots++)
+    vector<Vector3D*>::iterator dotIt;
+    for (dotIt = dots.begin(); dotIt != dots.end(); dotIt++)
     {
-        Vector3D* dot = *itDots;
-        points->InsertNextPoint(dot->X, dot->Y, dot->Z);
-        colors->InsertNextTuple3(255, 248, 220);
+        Vector3D* d = *dotIt;
+        pts->InsertNextPoint(d->X, d->Y, d->Z);
+        clr->InsertNextTuple3(255, 248, 220);
     }
 
-    vtkTriangle* vtkTriangle;
-    vector<tuple<int, int, int>*>::iterator itMesh;
-    for (itMesh = mesh.begin(); itMesh != mesh.end(); itMesh++)
+    vtkTriangle* vtkTri;
+    vector<tuple<int, int, int>*>::iterator meshIt;
+    for (meshIt = mesh.begin(); meshIt != mesh.end(); meshIt++)
     {
-        vtkTriangle = vtkTriangle::New();
-        vtkTriangle->GetPointIds()->SetId(0, get<0>(**itMesh));
-        vtkTriangle->GetPointIds()->SetId(1, get<1>(**itMesh));
-        vtkTriangle->GetPointIds()->SetId(2, get<2>(**itMesh));
+        vtkTri = vtkTriangle::New();
+        vtkTri->GetPointIds()->SetId(0, get<0>(**meshIt));
+        vtkTri->GetPointIds()->SetId(1, get<1>(**meshIt));
+        vtkTri->GetPointIds()->SetId(2, get<2>(**meshIt));
 
-        cells->InsertNextCell(vtkTriangle);
+        clArr->InsertNextCell(vtkTri);
     }
 
-    vtkRenderer* renderer = vtkRenderer::New();
-    vtkRenderWindow* renderWindow = vtkRenderWindow::New();
-    renderWindow->AddRenderer(renderer);
+    vtkRenderer* rndr = vtkRenderer::New();
+    vtkRenderWindow* wndw = vtkRenderWindow::New();
+    wndw->AddRenderer(rndr);
 
-    vtkRenderWindowInteractor* renderWindowInteractor =
+    vtkRenderWindowInteractor* rwi =
         vtkRenderWindowInteractor::New();
-    renderWindowInteractor->SetRenderWindow(renderWindow);
+    rwi->SetRenderWindow(wndw);
 
     vtkInteractorStyleTrackballCamera* style =
         vtkInteractorStyleTrackballCamera::New();
-    renderWindowInteractor->SetInteractorStyle(style);
+    rwi->SetInteractorStyle(style);
 
-    vtkPolyData* trianglePolyData = vtkPolyData::New();
+    vtkPolyData* polyData = vtkPolyData::New();
 
-    trianglePolyData->SetPoints(points);
-    trianglePolyData->SetPolys(cells);
-    trianglePolyData->GetPointData()->SetScalars(colors);
+    polyData->SetPoints(pts);
+    polyData->SetPolys(clArr);
+    polyData->GetPointData()->SetScalars(clr);
 
     vtkPolyDataMapper* mapper = vtkPolyDataMapper::New();
-    mapper->SetInputData(trianglePolyData);
+    mapper->SetInputData(polyData);
 
-    vtkActor* actor = vtkActor::New();
-    actor->SetMapper(mapper);
+    vtkActor* actr = vtkActor::New();
+    actr->SetMapper(mapper);
 
-    renderer->AddActor(actor);
+    rndr->AddActor(actr);
 
-    renderer->SetBackground(0.1, 0.2, 0.4);
-    renderWindow->SetSize(1280, 960);
+    rndr->SetBackground(0.1, 0.2, 0.4);
+    wndw->SetSize(1280, 960);
 
-    renderWindow->Render();
+    wndw->Render();
 
-    vtkWindowToImageFilter* windowToImageFilter = vtkWindowToImageFilter::New();
-    windowToImageFilter->SetInput(renderWindow);
+    vtkWindowToImageFilter* w2if = vtkWindowToImageFilter::New();
+    w2if->SetInput(wndw);
 
-    windowToImageFilter->Update();
-    vtkImageData* imageData = windowToImageFilter->GetOutput();
+    w2if->Update();
+    vtkImageData* imgData = w2if->GetOutput();
 
-    vtkPNGWriter* writer = vtkPNGWriter::New();
-    writer->SetFileName("output.png");
-    writer->SetInputData(imageData);
-    writer->Write();
+    vtkPNGWriter* pngWriter = vtkPNGWriter::New();
+    pngWriter->SetFileName("output.png");
+    pngWriter->SetInputData(imgData);
+    pngWriter->Write();
 
-    renderWindowInteractor->Start();
+    rwi->Start();
 
-    points->Delete();
-    colors->Delete();
-    cells->Delete();
-    renderer->Delete();
-    renderWindow->Delete();
-    renderWindowInteractor->Delete();
+    pts->Delete();
+    clr->Delete();
+    clArr->Delete();
+    rndr->Delete();
+    wndw->Delete();
+    rwi->Delete();
     style->Delete();
-    trianglePolyData->Delete();
+    polyData->Delete();
     mapper->Delete();
-    actor->Delete();
-    windowToImageFilter->Delete();
-    imageData->Delete();
-    writer->Delete();
+    actr->Delete();
+    w2if->Delete();
+    imgData->Delete();
+    pngWriter->Delete();
 }
-
-
-
 
 #endif
